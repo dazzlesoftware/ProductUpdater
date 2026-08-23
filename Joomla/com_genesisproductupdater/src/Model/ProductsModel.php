@@ -31,6 +31,7 @@ class ProductsModel extends ListModel
                 'id', 'a.id',
                 'title', 'a.title',
                 'element', 'a.element',
+				'platform', 'a.platform',
                 'type', 'a.type',
                 'state', 'a.state',
                 'ordering', 'a.ordering',
@@ -51,6 +52,9 @@ class ProductsModel extends ListModel
         $type = $this->getUserStateFromRequest($this->context . '.filter.type', 'filter_type');
         $this->setState('filter.type', $type);
 
+		$platform = $this->getUserStateFromRequest($this->context . '.filter.platform', 'filter_platform');
+		$this->setState('filter.platform', $platform);
+
         $published = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '');
         $this->setState('filter.state', $published);
 
@@ -64,6 +68,7 @@ class ProductsModel extends ListModel
     {
         $id .= ':' . $this->getState('filter.search');
         $id .= ':' . $this->getState('filter.type');
+		$id .= ':' . $this->getState('filter.platform');
         $id .= ':' . $this->getState('filter.state');
 
         return parent::getStoreId($id);
@@ -80,7 +85,7 @@ class ProductsModel extends ListModel
         $query->select(
             $this->getState(
                 'list.select',
-                'a.id, a.element, a.title, a.type, a.state, a.ordering, a.created, a.modified'
+                'a.id, a.element, a.title, a.platform, a.type, a.state, a.ordering, a.created, a.modified'
             )
         );
         $query->from($db->quoteName('#__productupdater_products', 'a'));
@@ -110,6 +115,12 @@ class ProductsModel extends ListModel
         if ($type !== '') {
             $query->where($db->quoteName('a.type') . ' = :type')->bind(':type', $type);
         }
+
+		$platform = (string) $this->getState('filter.platform', '');
+
+		if ($platform !== '') {
+			$query->where($db->quoteName('a.platform') . ' = :platform')->bind(':platform', $platform);
+		}
 
         $published = $this->getState('filter.state');
 

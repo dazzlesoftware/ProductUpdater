@@ -7,7 +7,7 @@
 	<license>GNU/GPLv3 and later</license>
 	<authorEmail>support@dazzlesoftware.org</authorEmail>
 	<authorUrl>https://dazzlesoftware.org</authorUrl>
-	<version>1.5.1</version>
+	<version>1.5.2</version>
 	<description>COM_GENESISPRODUCTUPDATER_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Genesisproductupdater</namespace>
 	<scriptfile>script.genesisproductupdater.php</scriptfile>

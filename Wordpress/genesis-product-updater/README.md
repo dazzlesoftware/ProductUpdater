@@ -131,4 +131,4 @@ For a normal release workflow:
 
 ## Version
 
-Current package version: **1.5.1**.
+Current package version: **1.5.2**.

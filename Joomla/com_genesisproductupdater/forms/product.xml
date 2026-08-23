@@ -27,11 +27,16 @@
 		/>
 		<field
 			name="platform"
-			type="platformlist"
+			type="list"
 			label="COM_GENESISPRODUCTUPDATER_FIELD_VERSION_PLATFORM_LABEL"
 			default="joomla"
 			required="true"
-		/>
+		>
+			<option value="joomla">COM_GENESISPRODUCTUPDATER_PLATFORM_JOOMLA</option>
+			<option value="wordpress">COM_GENESISPRODUCTUPDATER_PLATFORM_WORDPRESS</option>
+			<option value="mobile">COM_GENESISPRODUCTUPDATER_PLATFORM_MOBILE</option>
+			<option value="fab">COM_GENESISPRODUCTUPDATER_PLATFORM_FAB</option>
+		</field>
 		<field
 			name="type"
 			type="list"

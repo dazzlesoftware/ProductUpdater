@@ -24,6 +24,18 @@
 			<option value="language">COM_GENESISPRODUCTUPDATER_TYPE_LANGUAGE</option>
 		</field>
 		<field
+			name="platform"
+			type="list"
+			label="COM_GENESISPRODUCTUPDATER_FIELD_VERSION_PLATFORM_LABEL"
+			onchange="this.form.submit();"
+		>
+			<option value="">COM_GENESISPRODUCTUPDATER_SELECT_PLATFORM</option>
+			<option value="joomla">COM_GENESISPRODUCTUPDATER_PLATFORM_JOOMLA</option>
+			<option value="wordpress">COM_GENESISPRODUCTUPDATER_PLATFORM_WORDPRESS</option>
+			<option value="mobile">COM_GENESISPRODUCTUPDATER_PLATFORM_MOBILE</option>
+			<option value="fab">COM_GENESISPRODUCTUPDATER_PLATFORM_FAB</option>
+		</field>
+		<field
 			name="published"
 			type="status"
 			label="JOPTION_SELECT_PUBLISHED"
