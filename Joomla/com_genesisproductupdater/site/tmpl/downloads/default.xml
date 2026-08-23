@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <layout title="Downloads">
+        <message>Displays published updater products grouped by download category.</message>
+    </layout>
+    <fields name="params">
+        <fieldset name="basic">
+            <field name="category_id" type="category" extension="com_genesisproductupdater" label="Download Category" description="Show one category, or leave as All Categories." published="1" filter="integer">
+                <option value="">All Categories</option>
+            </field>
+        </fieldset>
+    </fields>
+</metadata>
