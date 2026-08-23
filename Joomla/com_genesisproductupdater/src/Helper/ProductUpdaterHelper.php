@@ -306,6 +306,23 @@ class ProductUpdaterHelper
         return $all;
     }
 
+    public static function generateAllChangelogs(): array
+    {
+        $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+        $query = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__productupdater_changelogs'))
+            ->where($db->quoteName('state') . ' = 1');
+        $db->setQuery($query);
+
+        $all = [];
+        foreach ($db->loadColumn() as $id) {
+            $all[$id] = self::generateChangelogForProduct((int) $id);
+        }
+
+        return $all;
+    }
+
     /**
      * Loads a product record from the database with its "versions" JSON
      * column decoded into a plain array.

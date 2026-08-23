@@ -172,7 +172,12 @@ class Product_Updater_Admin {
 				<?php endforeach; ?>
 			</ul>
 
-			<p><a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all' ), 'product_updater_generate_all' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Regenerate All Files Now', 'genesis-product-updater' ); ?></a></p>
+			<h2><?php esc_html_e( 'Force Regeneration', 'genesis-product-updater' ); ?></h2>
+			<p><?php esc_html_e( 'Rebuild generated files from the currently saved Products and Changelogs.', 'genesis-product-updater' ); ?></p>
+			<p>
+				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all' ), 'product_updater_generate_all' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Regenerate All Product and Changelog Files', 'genesis-product-updater' ); ?></a>
+				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all_changelogs' ), 'product_updater_generate_all_changelogs' ) ); ?>" class="button"><?php esc_html_e( 'Regenerate All Changelog Files', 'genesis-product-updater' ); ?></a>
+			</p>
 		</div>
 		<?php
 	}
@@ -235,6 +240,24 @@ class Product_Updater_Admin {
 			wp_safe_redirect( remove_query_arg( array( 'product_updater_action', '_wpnonce' ) ) );
 			exit;
 		}
+
+		if ( isset( $_GET['product_updater_action'] ) && 'generate_all_changelogs' === $_GET['product_updater_action'] && check_admin_referer( 'product_updater_generate_all_changelogs' ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+			$results = Product_Updater_File_Writer::instance()->generate_all_changelogs();
+			$errors  = 0;
+			foreach ( $results as $changelog_results ) {
+				foreach ( $changelog_results as $result ) {
+					if ( is_wp_error( $result ) ) {
+						++$errors;
+					}
+				}
+			}
+			set_transient( 'product_updater_generate_all_notice', array( 'count' => count( $results ), 'errors' => $errors, 'kind' => 'changelog' ), 60 );
+			wp_safe_redirect( remove_query_arg( array( 'product_updater_action', '_wpnonce' ) ) );
+			exit;
+		}
 	}
 
 	public function notices() {
@@ -244,15 +267,16 @@ class Product_Updater_Admin {
 		}
 		delete_transient( 'product_updater_generate_all_notice' );
 
+		$label = 'changelog' === ( $notice['kind'] ?? '' ) ? __( 'changelog(s)', 'genesis-product-updater' ) : __( 'product(s)', 'genesis-product-updater' );
 		if ( $notice['errors'] > 0 ) {
 			printf(
 				'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
-				esc_html( sprintf( __( 'Regenerated files for %1$d product(s), with %2$d error(s). Check folder permissions.', 'genesis-product-updater' ), $notice['count'], $notice['errors'] ) )
+				esc_html( sprintf( __( 'Regenerated files for %1$d %2$s, with %3$d error(s). Check folder permissions.', 'genesis-product-updater' ), $notice['count'], $label, $notice['errors'] ) )
 			);
 		} else {
 			printf(
 				'<div class="notice notice-success is-dismissible"><p>%s</p></div>',
-				esc_html( sprintf( __( 'Regenerated files for %d product(s).', 'genesis-product-updater' ), $notice['count'] ) )
+				esc_html( sprintf( __( 'Regenerated files for %1$d %2$s.', 'genesis-product-updater' ), $notice['count'], $label ) )
 			);
 		}
 	}

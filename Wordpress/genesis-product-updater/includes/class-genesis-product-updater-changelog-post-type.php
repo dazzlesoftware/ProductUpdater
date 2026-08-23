@@ -112,10 +112,8 @@ class Product_Updater_Changelog_Post_Type {
 				}
 				$product = Product_Updater_Product_Metaboxes::get_product_data( $product_id );
 				$writer  = Product_Updater_File_Writer::instance();
-				foreach ( Product_Updater_Generator_Manager::instance()->get_platforms() as $generator ) {
-					if ( ! $generator->supports_changelog() ) {
-						continue;
-					}
+				$generator = Product_Updater_Generator_Manager::instance()->get_platform( $product['platform'] ?? '' );
+				if ( $generator && $generator->supports_changelog() ) {
 					$info = $writer->get_changelog_file_info( $generator, $product );
 					printf(
 						'<div><a href="%s" target="_blank">%s</a> %s</div>',
@@ -123,6 +121,8 @@ class Product_Updater_Changelog_Post_Type {
 						esc_html( $generator->get_changelog_subpath( $product ) ),
 						$info['exists'] ? '<span style="color:#46b450;">&#10003;</span>' : '<span style="color:#dc3232;">(not generated)</span>'
 					);
+				} else {
+					echo '&#8212;';
 				}
 				break;
 		}

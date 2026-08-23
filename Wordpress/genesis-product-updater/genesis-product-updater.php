@@ -8,7 +8,7 @@
 /**
  * Plugin Name: Genesis Product Updater
  * Description: Manage self-hosted update feeds (Joomla XML, WordPress JSON, and any other platform you register) for multiple products/platforms from one place, and generate the feed files to a configurable folder.
- * Version: 1.5.0
+ * Version: 1.5.1
  * Author: Dazzle Software
  * Author URI: https://dazzlesoftware.org
  * License: GPLv3 or later
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PRODUCT_UPDATER_VERSION', '1.5.0' );
+define( 'PRODUCT_UPDATER_VERSION', '1.5.1' );
 define( 'PRODUCT_UPDATER_PLUGIN_FILE', __FILE__ );
 define( 'PRODUCT_UPDATER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PRODUCT_UPDATER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

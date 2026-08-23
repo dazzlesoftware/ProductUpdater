@@ -47,4 +47,15 @@ class HtmlView extends ListView
 
         $this->canDo = ContentHelper::getActions('com_genesisproductupdater');
     }
+
+    protected function addToolbar()
+    {
+        parent::addToolbar();
+        if ($this->canDo->get('core.edit')) {
+            $this->getDocument()->getToolbar()->standardButton('generate-all')
+                ->text('COM_GENESISPRODUCTUPDATER_TOOLBAR_GENERATE_ALL_CHANGELOGS')
+                ->icon('icon-refresh')
+                ->task('changelogs.generateAll');
+        }
+    }
 }

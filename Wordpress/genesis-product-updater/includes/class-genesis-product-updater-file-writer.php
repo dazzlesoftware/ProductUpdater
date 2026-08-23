@@ -260,4 +260,30 @@ class Product_Updater_File_Writer {
 
 		return $all;
 	}
+
+	/**
+	 * Force regeneration of every published changelog.
+	 *
+	 * @return array changelog post ID => generation results
+	 */
+	public function generate_all_changelogs() {
+		$posts = get_posts(
+			array(
+				'post_type'      => Product_Updater_Changelog::POST_TYPE,
+				'posts_per_page' => -1,
+				'post_status'    => 'publish',
+				'fields'         => 'ids',
+			)
+		);
+
+		$all = array();
+		foreach ( $posts as $changelog_post_id ) {
+			$product_id = (int) get_post_meta( $changelog_post_id, '_product_updater_changelog_product_id', true );
+			if ( $product_id ) {
+				$all[ $changelog_post_id ] = $this->generate_changelog_for_product( $product_id );
+			}
+		}
+
+		return $all;
+	}
 }
