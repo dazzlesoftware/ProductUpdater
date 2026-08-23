@@ -1,2 +1,1 @@
-# ProductUpdater
-Genesis Product Updater
+# Genesis Product Updater
