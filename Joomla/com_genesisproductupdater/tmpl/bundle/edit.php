@@ -1,9 +1,0 @@
-<?php
-/** @package Genesis Product Updater @author Dazzle Software https://dazzlesoftware.org @copyright Copyright (C) 2026 Dazzle Software, LLC @license GNU/GPLv3 and later */
-\defined('_JEXEC') or die;
-use Joomla\CMS\HTML\HTMLHelper;use Joomla\CMS\Language\Text;use Joomla\CMS\Router\Route;
-$this->getDocument()->getWebAssetManager()->useScript('keepalive')->useScript('form.validate');
-$action=$this->item->id?'index.php?option=com_genesisproductupdater&task=bundle.edit&id='.(int)$this->item->id:'index.php?option=com_genesisproductupdater&task=bundle.add';
-?>
-<form action="<?php echo Route::_($action); ?>" method="post" name="adminForm" id="bundle-form" class="form-validate"><div class="row"><div class="col-lg-9"><div class="card"><div class="card-body"><?php echo $this->form->renderFieldset('details'); ?></div></div></div><div class="col-lg-3"><?php if(!empty($this->item->id)): ?><div class="card"><div class="card-body"><button type="button" class="btn btn-primary btn-sm" onclick="Joomla.submitbutton('bundle.generate')"><?php echo Text::_('COM_GENESISPRODUCTUPDATER_GENERATE_FILES'); ?></button></div></div><?php else: ?><div class="alert alert-info"><?php echo Text::_('COM_GENESISPRODUCTUPDATER_SAVE_TO_GENERATE'); ?></div><?php endif; ?></div></div><input type="hidden" name="task" value=""><?php echo HTMLHelper::_('form.token'); ?></form>
-<script>document.addEventListener('DOMContentLoaded',function(){const p=document.getElementById('jform_platform'),s=document.getElementById('jform_product_ids'),f=document.getElementById('jform_filename');if(!p||!s)return;function sync(){Array.from(s.options).forEach(function(o){const match=(o.text.match(/\[([^\]]+)\]/)||[])[1];o.hidden=!!match&&match.toLowerCase()!==p.value;if(o.hidden)o.selected=false;});if(f&&/\.(xml|json)$/i.test(f.value))f.value=f.value.replace(/\.(xml|json)$/i,p.value==='joomla'?'.xml':'.json');}p.addEventListener('change',sync);sync();});</script>

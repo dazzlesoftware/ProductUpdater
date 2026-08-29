@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="details">
+		<field
+			name="id"
+			type="number"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			default="0"
+			class="readonly"
+			readonly="true"
+		/>
+		<field
+			name="product_id"
+			type="sql"
+			label="COM_GENESISUPDATER_FIELD_PRODUCT_LABEL"
+			required="true"
+			query="SELECT id AS value, title AS text FROM #__genesisupdater_products WHERE state IN (0,1) ORDER BY title ASC"
+			key_field="value"
+			value_field="text"
+			header="COM_GENESISUPDATER_FIELD_PRODUCT_SELECT"
+		/>
+		<field
+			name="title"
+			type="text"
+			label="COM_GENESISUPDATER_FIELD_TITLE_LABEL"
+			description="COM_GENESISUPDATER_FIELD_CHANGELOG_TITLE_DESC"
+			readonly="true"
+			size="40"
+		/>
+		<field
+			name="state"
+			type="list"
+			label="JSTATUS"
+			default="1"
+			filter="intval"
+		>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="2">JARCHIVED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+		<field
+			name="ordering"
+			type="text"
+			label="COM_GENESISUPDATER_FIELD_ORDERING_LABEL"
+			default="0"
+		/>
+	</fieldset>
+	<fieldset name="entries" label="COM_GENESISUPDATER_FIELDSET_ENTRIES">
+		<field
+			name="entries"
+			type="subform"
+			label="COM_GENESISUPDATER_FIELD_ENTRIES_LABEL"
+			description="COM_GENESISUPDATER_FIELD_ENTRIES_DESC"
+			multiple="true"
+			layout="joomla.form.field.subform.repeatable-table"
+			formsource="administrator/components/com_genesisupdater/forms/subform_changelog_entry.xml"
+			min="0"
+		/>
+	</fieldset>
+</form>

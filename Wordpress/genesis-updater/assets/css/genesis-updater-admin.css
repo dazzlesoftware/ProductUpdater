@@ -1,0 +1,33 @@
+.genesis-updater-rows-table th,
+.genesis-updater-rows-table td {
+	padding: 6px 8px;
+	vertical-align: middle;
+}
+
+.genesis-updater-rows-table input[type="text"] {
+	width: 100%;
+}
+
+.genesis-updater-form-table textarea {
+	width: 100%;
+}
+
+.genesis-updater-remove-row {
+	color: #b32d2e;
+	font-size: 16px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.genesis-updater-compat-label {
+	font-size: 11px;
+	color: #666;
+	white-space: nowrap;
+	margin-bottom: 2px;
+}
+
+.genesis-updater-compat-na,
+.genesis-updater-mobile-na {
+	display: none;
+	color: #aaa;
+}

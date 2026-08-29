@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="basic" label="COM_GENESISUPDATER_CONFIG_FIELDSET_BASIC">
+		<field
+			name="output_path"
+			type="text"
+			label="COM_GENESISUPDATER_FIELD_OUTPUT_PATH_LABEL"
+			description="COM_GENESISUPDATER_FIELD_OUTPUT_PATH_DESC"
+			default="updates"
+			size="60"
+		/>
+		<field
+			name="base_url"
+			type="text"
+			label="COM_GENESISUPDATER_FIELD_BASE_URL_LABEL"
+			description="COM_GENESISUPDATER_FIELD_BASE_URL_DESC"
+			default=""
+			size="60"
+		/>
+	</fieldset>
+	<fieldset name="downloads" label="COM_GENESISUPDATER_CONFIG_FIELDSET_DOWNLOADS">
+		<field name="download_accent" type="color" label="COM_GENESISUPDATER_DOWNLOAD_ACCENT_LABEL" default="#914dad" />
+		<field name="download_text" type="color" label="COM_GENESISUPDATER_DOWNLOAD_TEXT_LABEL" default="#ffffff" />
+		<field name="download_hover_accent" type="color" label="Download Button Hover Background" default="#743d8a" />
+		<field name="download_hover_text" type="color" label="Download Button Hover Text" default="#ffffff" />
+		<field name="download_radius" type="number" label="COM_GENESISUPDATER_DOWNLOAD_RADIUS_LABEL" default="3" min="0" max="50" />
+		<field name="download_icons" type="radio" layout="joomla.form.field.radio.switcher" label="COM_GENESISUPDATER_DOWNLOAD_ICONS_LABEL" default="1"><option value="0">JNO</option><option value="1">JYES</option></field>
+		<field name="download_bootstrap" type="radio" layout="joomla.form.field.radio.switcher" label="COM_GENESISUPDATER_DOWNLOAD_BOOTSTRAP_LABEL" description="COM_GENESISUPDATER_DOWNLOAD_BOOTSTRAP_DESC" default="0"><option value="0">JNO</option><option value="1">JYES</option></field>
+		<field name="ios_bg" type="color" label="App Store Background" default="#000000" /><field name="ios_text" type="color" label="App Store Text" default="#ffffff" /><field name="ios_hover_bg" type="color" label="App Store Hover Background" default="#333333" /><field name="ios_hover_text" type="color" label="App Store Hover Text" default="#ffffff" />
+		<field name="android_bg" type="color" label="Google Play Background" default="#01875f" /><field name="android_text" type="color" label="Google Play Text" default="#ffffff" /><field name="android_hover_bg" type="color" label="Google Play Hover Background" default="#016b4b" /><field name="android_hover_text" type="color" label="Google Play Hover Text" default="#ffffff" />
+		<field name="fab_bg" type="color" label="Fab Background" default="#252525" /><field name="fab_text" type="color" label="Fab Text" default="#ffffff" /><field name="fab_hover_bg" type="color" label="Fab Hover Background" default="#3b3b3b" /><field name="fab_hover_text" type="color" label="Fab Hover Text" default="#ffffff" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			validate="rules"
+			filter="rules"
+			component="com_genesisupdater"
+			section="component"
+		/>
+	</fieldset>
+</config>

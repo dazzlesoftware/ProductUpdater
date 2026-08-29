@@ -1,27 +1,28 @@
-# Genesis Product Updater
+# Genesis Updater
 
-Genesis Product Updater is maintained as two CMS implementations with the same features and generated-feed behavior. Changes to shared functionality should normally be applied to both versions at the same time.
+Genesis Updater is maintained as two CMS implementations with the same features and generated-feed behavior. Changes to shared functionality should normally be applied to both versions at the same time.
 
 ## Source folders
 
 ### Joomla
 
-Source: [`Joomla/com_genesisproductupdater`](Joomla/com_genesisproductupdater)
+Source: [`Joomla/com_genesisupdater`](Joomla/com_genesisupdater)
 
-- Joomla component identifier: `com_genesisproductupdater`
-- PHP namespace: `Joomla\Component\Genesisproductupdater`
-- Language prefix: `COM_GENESISPRODUCTUPDATER`
-- Install package format: `com_genesisproductupdater-{version}.zip`
+- Joomla component identifier: `com_genesisupdater`
+- PHP namespace: `Joomla\Component\Genesisupdater`
+- Language prefix: `COM_GENESISUPDATER`
+- Install package format: `com_genesisupdater-{version}.zip`
 
 The Joomla component provides Products, Categories, Changelogs, generated update feeds, download statistics, and a configurable Downloads menu item.
 
 ### WordPress
 
-Source: [`Wordpress/genesis-product-updater`](Wordpress/genesis-product-updater)
+Source: [`Wordpress/genesis-updater`](Wordpress/genesis-updater)
 
-- Plugin folder and slug: `genesis-product-updater`
-- Main plugin file: `genesis-product-updater.php`
-- Text domain: `genesis-product-updater`
+- Plugin folder and slug: `genesis-updater`
+- Main plugin file: `genesis-updater.php`
+- Text domain: `genesis-updater`
+- Install package format: `genesis-updater-{version}.zip`
 
 The WordPress plugin provides the matching Products, Categories, Changelogs, generated update feeds, download statistics, and Downloads page shortcode.
 
@@ -43,6 +44,6 @@ Platform-specific behavior can differ where required by Joomla or WordPress, but
 
 ## Current release
 
-Current package version: **1.7.0**
+Current package version: **1.8.1**
 
 Both packages are authored by [Dazzle Software](https://dazzlesoftware.org), Copyright (C) 2026 Dazzle Software, LLC, and licensed under GNU/GPLv3 and later.

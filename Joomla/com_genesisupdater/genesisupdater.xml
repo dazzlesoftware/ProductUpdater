@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="component" method="upgrade">
+	<name>com_genesisupdater</name>
+	<author>Dazzle Software</author>
+	<creationDate>2026-08</creationDate>
+	<copyright>Copyright (C) 2026 Dazzle Software, LLC</copyright>
+	<license>GNU/GPLv3 and later</license>
+	<authorEmail>support@dazzlesoftware.org</authorEmail>
+	<authorUrl>https://dazzlesoftware.org</authorUrl>
+	<version>1.8.1</version>
+	<description>COM_GENESISUPDATER_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Component\Genesisupdater</namespace>
+	<scriptfile>script.genesisupdater.php</scriptfile>
+	<files folder="site">
+		<folder>services</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
+	</files>
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.sql</file>
+		</sql>
+	</uninstall>
+	<administration>
+		<menu img="class:generic">COM_GENESISUPDATER</menu>
+		<submenu>
+			<menu link="option=com_genesisupdater&amp;view=products" img="class:generic">COM_GENESISUPDATER_SUBMENU_PRODUCTS</menu>
+			<menu link="option=com_categories&amp;extension=com_genesisupdater" img="class:folder">COM_GENESISUPDATER_SUBMENU_CATEGORIES</menu>
+			<menu link="option=com_genesisupdater&amp;view=changelogs" img="class:generic">COM_GENESISUPDATER_SUBMENU_CHANGELOGS</menu>
+			<menu link="option=com_genesisupdater&amp;view=bundles" img="class:folder">COM_GENESISUPDATER_SUBMENU_BUNDLES</menu>
+		</submenu>
+		<files folder=".">
+			<filename>README.md</filename>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>genesisupdater.xml</filename>
+			<filename>script.genesisupdater.php</filename>
+			<folder>forms</folder>
+			<folder>services</folder>
+			<folder>sql</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
+		</files>
+		<languages folder=".">
+			<language tag="en-GB">language/en-GB/en-GB.com_genesisupdater.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_genesisupdater.sys.ini</language>
+		</languages>
+	</administration>
+	<media destination="com_genesisupdater" folder="media">
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
+</extension>
