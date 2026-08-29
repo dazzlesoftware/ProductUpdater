@@ -258,6 +258,8 @@ class Product_Updater_File_Writer {
 			$all[ $product_id . '_changelog' ] = $this->generate_changelog_for_product( $product_id );
 		}
 
+		$all['bundles'] = Product_Updater_Bundle_Generator::instance()->generate_all();
+
 		return $all;
 	}
 

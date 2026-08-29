@@ -7,7 +7,7 @@
 	<license>GNU/GPLv3 and later</license>
 	<authorEmail>support@dazzlesoftware.org</authorEmail>
 	<authorUrl>https://dazzlesoftware.org</authorUrl>
-	<version>1.5.2</version>
+	<version>1.7.0</version>
 	<description>COM_GENESISPRODUCTUPDATER_XML_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Genesisproductupdater</namespace>
 	<scriptfile>script.genesisproductupdater.php</scriptfile>
@@ -32,6 +32,7 @@
 			<menu link="option=com_genesisproductupdater&amp;view=products" img="class:generic">COM_GENESISPRODUCTUPDATER_SUBMENU_PRODUCTS</menu>
 			<menu link="option=com_categories&amp;extension=com_genesisproductupdater" img="class:folder">COM_GENESISPRODUCTUPDATER_SUBMENU_CATEGORIES</menu>
 			<menu link="option=com_genesisproductupdater&amp;view=changelogs" img="class:generic">COM_GENESISPRODUCTUPDATER_SUBMENU_CHANGELOGS</menu>
+			<menu link="option=com_genesisproductupdater&amp;view=bundles" img="class:folder">COM_GENESISPRODUCTUPDATER_SUBMENU_BUNDLES</menu>
 		</submenu>
 		<files folder=".">
 			<filename>README.md</filename>

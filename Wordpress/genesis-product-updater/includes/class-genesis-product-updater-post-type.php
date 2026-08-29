@@ -72,6 +72,7 @@ class Product_Updater_Post_Type {
 	public static function activate() {
 		self::instance()->register();
 		Product_Updater_Changelog_Post_Type::instance()->register();
+		Product_Updater_Bundle::instance()->register();
 		flush_rewrite_rules();
 	}
 

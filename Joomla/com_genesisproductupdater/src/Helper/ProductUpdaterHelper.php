@@ -303,6 +303,8 @@ class ProductUpdaterHelper
             $all[$id] = self::generateProduct((int) $id);
         }
 
+		$all['bundles'] = self::generateAllBundles();
+
         return $all;
     }
 
@@ -321,6 +323,97 @@ class ProductUpdaterHelper
         }
 
         return $all;
+    }
+
+    public static function loadBundle(int $bundleId): ?array
+    {
+        $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+        $query = $db->getQuery(true)->select('*')->from($db->quoteName('#__productupdater_bundles'))->where($db->quoteName('id') . ' = :id')->bind(':id', $bundleId, \Joomla\Database\ParameterType::INTEGER);
+        $db->setQuery($query); $bundle = $db->loadAssoc();
+        if (!$bundle) { return null; }
+        $bundle['product_ids'] = json_decode((string) $bundle['product_ids'], true) ?: [];
+        return $bundle;
+    }
+
+    public static function getBundleFileInfo(array $bundle): array
+    {
+		$platform = self::sanitizeElement((string) ($bundle['platform'] ?? 'joomla'));
+        $slug = self::sanitizeElement((string) ($bundle['output_slug'] ?: ($bundle['title'] ?? 'bundle')));
+		$filename = preg_replace('/[^a-z0-9_.-]+/i', '-', (string) ($bundle['filename'] ?: ($platform === 'joomla' ? 'list.xml' : 'list.json')));
+		$subpath = $platform . '/' . $slug . '/' . $filename;
+        $path = self::getOutputBasePath() . '/' . str_replace('/', DIRECTORY_SEPARATOR, $subpath);
+        $baseUrl = self::getBaseUrl();
+        return ['subpath' => $subpath, 'path' => $path, 'url' => $baseUrl !== '' ? $baseUrl . '/' . $subpath : '', 'exists' => is_file($path)];
+    }
+
+    public static function generateBundle(int $bundleId): ?string
+    {
+        $bundle = self::loadBundle($bundleId);
+        if ($bundle === null) { return null; }
+		$platformSlug = (string) ($bundle['platform'] ?? 'joomla');
+		if ($platformSlug !== 'joomla') { return self::generateJsonBundle($bundle); }
+        $joomla = self::getRegistry()->getPlatform('joomla');
+        if ($joomla === null) { throw new \RuntimeException('Joomla platform generator is unavailable.'); }
+        $xml = new \XMLWriter(); $xml->openMemory(); $xml->setIndent(true); $xml->setIndentString('    '); $xml->startDocument('1.0', 'UTF-8', 'no');
+        $xml->startElement('extensionset'); $xml->writeAttribute('name', (string) $bundle['title']); $xml->writeAttribute('description', (string) $bundle['description']);
+        foreach ($bundle['product_ids'] as $productId) {
+            $product = self::loadProduct((int) $productId);
+            if ($product === null || (int) ($product['state'] ?? 0) !== 1 || ($product['platform'] ?? '') !== 'joomla') { continue; }
+            foreach (($product['versions'] ?? []) as $row) {
+                if (($row['platform'] ?? '') !== 'joomla' || empty($row['version'])) { continue; }
+                $xml->startElement('extension');
+                $attributes = [
+                    'name' => $product['title'] ?? '', 'description' => $product['description'] ?? '', 'element' => $product['element'] ?? '',
+                    'type' => $product['type'] ?? '', 'client' => 'site', 'version' => $row['version'],
+                    'targetplatformversion' => $row['target_version'] ?? '*',
+                    'detailsurl' => self::getPublicUrl(self::getProductFilePath($product, $joomla)) ?? '',
+                ];
+                foreach ($attributes as $name => $value) { $xml->writeAttribute($name, (string) $value); }
+                if (!empty($row['info_url'])) { $xml->writeAttribute('infourl', (string) $row['info_url']); }
+                $xml->endElement();
+            }
+        }
+        $xml->endElement(); $xml->endDocument(); $info = self::getBundleFileInfo($bundle); self::writeFile($info['path'], $xml->outputMemory()); return $info['path'];
+    }
+
+	private static function generateJsonBundle(array $bundle): string
+	{
+		$slug = (string) $bundle['platform']; $platform = self::getRegistry()->getPlatform($slug);
+		if ($platform === null) { throw new \RuntimeException('Bundle platform generator is unavailable.'); }
+		$products = [];
+		foreach ($bundle['product_ids'] as $productId) {
+			$product = self::loadProduct((int) $productId);
+			if ($product === null || (int) ($product['state'] ?? 0) !== 1 || ($product['platform'] ?? '') !== $slug) { continue; }
+			$row = self::getCurrentRow($product['versions'] ?? [], $slug); if ($row === null) { continue; }
+			$products[] = ['name' => $product['title'] ?? '', 'element' => $product['element'] ?? '', 'type' => $product['type'] ?? '', 'version' => $row['version'] ?? '', 'preview_image' => self::getPreviewImageUrl($product), 'feed_url' => self::getPublicUrl(self::getProductFilePath($product, $platform)) ?? '', 'info_url' => $row['info_url'] ?? ''];
+		}
+		$contents = json_encode(['name' => $bundle['title'] ?? '', 'description' => $bundle['description'] ?? '', 'platform' => $slug, 'products' => $products], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+		if ($contents === false) { throw new \RuntimeException('Unable to encode bundle JSON.'); }
+		$info = self::getBundleFileInfo($bundle); self::writeFile($info['path'], $contents . "\n"); return $info['path'];
+	}
+
+	private static function getCurrentRow(array $rows, string $platform): ?array
+	{
+		$rows = array_values(array_filter($rows, static fn($row) => ($row['platform'] ?? '') === $platform && !empty($row['version'])));
+		foreach ($rows as $row) { if (!empty($row['is_current'])) { return $row; } }
+		usort($rows, static fn($a, $b) => version_compare((string) ($b['version'] ?? '0'), (string) ($a['version'] ?? '0'))); return $rows[0] ?? null;
+	}
+
+	private static function getPreviewImageUrl(array $product): string
+	{
+		$image = trim((string) ($product['preview_image'] ?? '')); if ($image === '') { return ''; }
+		$image = preg_replace('/#joomlaImage:\/\/.*$/', '', $image);
+		if (preg_match('#^https?://#i', $image)) { return $image; }
+		return rtrim((string) \Joomla\CMS\Uri\Uri::root(), '/') . '/' . ltrim($image, '/');
+	}
+
+    public static function generateAllBundles(): array
+    {
+        $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+        $query = $db->getQuery(true)->select($db->quoteName('id'))->from($db->quoteName('#__productupdater_bundles'))->where($db->quoteName('state') . ' = 1');
+        $db->setQuery($query); $results = [];
+        foreach ($db->loadColumn() as $id) { $results[$id] = self::generateBundle((int) $id); }
+        return $results;
     }
 
     /**

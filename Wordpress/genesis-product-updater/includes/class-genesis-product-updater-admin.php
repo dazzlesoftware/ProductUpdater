@@ -177,6 +177,7 @@ class Product_Updater_Admin {
 			<p>
 				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all' ), 'product_updater_generate_all' ) ); ?>" class="button button-primary"><?php esc_html_e( 'Regenerate All Product and Changelog Files', 'genesis-product-updater' ); ?></a>
 				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all_changelogs' ), 'product_updater_generate_all_changelogs' ) ); ?>" class="button"><?php esc_html_e( 'Regenerate All Changelog Files', 'genesis-product-updater' ); ?></a>
+				<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=genesis-product-updater-settings&product_updater_action=generate_all_bundles' ), 'product_updater_generate_all_bundles' ) ); ?>" class="button"><?php esc_html_e( 'Regenerate All Bundle Files', 'genesis-product-updater' ); ?></a>
 			</p>
 		</div>
 		<?php
@@ -258,6 +259,14 @@ class Product_Updater_Admin {
 			wp_safe_redirect( remove_query_arg( array( 'product_updater_action', '_wpnonce' ) ) );
 			exit;
 		}
+
+		if ( isset( $_GET['product_updater_action'] ) && 'generate_all_bundles' === $_GET['product_updater_action'] && check_admin_referer( 'product_updater_generate_all_bundles' ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) { return; }
+			$results = Product_Updater_Bundle_Generator::instance()->generate_all();
+			$errors = count( array_filter( $results, 'is_wp_error' ) );
+			set_transient( 'product_updater_generate_all_notice', array( 'count' => count( $results ), 'errors' => $errors, 'kind' => 'bundle' ), 60 );
+			wp_safe_redirect( remove_query_arg( array( 'product_updater_action', '_wpnonce' ) ) ); exit;
+		}
 	}
 
 	public function notices() {
@@ -267,7 +276,8 @@ class Product_Updater_Admin {
 		}
 		delete_transient( 'product_updater_generate_all_notice' );
 
-		$label = 'changelog' === ( $notice['kind'] ?? '' ) ? __( 'changelog(s)', 'genesis-product-updater' ) : __( 'product(s)', 'genesis-product-updater' );
+		$kind = $notice['kind'] ?? '';
+		$label = 'changelog' === $kind ? __( 'changelog(s)', 'genesis-product-updater' ) : ( 'bundle' === $kind ? __( 'bundle(s)', 'genesis-product-updater' ) : __( 'product(s)', 'genesis-product-updater' ) );
 		if ( $notice['errors'] > 0 ) {
 			printf(
 				'<div class="notice notice-warning is-dismissible"><p>%s</p></div>',

@@ -44,3 +44,22 @@ CREATE TABLE IF NOT EXISTS `#__productupdater_changelogs` (
   KEY `idx_product_id` (`product_id`),
   KEY `idx_state` (`state`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `#__productupdater_bundles` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL DEFAULT '',
+  `description` VARCHAR(1024) NOT NULL DEFAULT '',
+  `platform` VARCHAR(32) NOT NULL DEFAULT 'joomla',
+  `output_slug` VARCHAR(255) NOT NULL DEFAULT '',
+  `filename` VARCHAR(255) NOT NULL DEFAULT 'list.xml',
+  `product_ids` LONGTEXT NOT NULL,
+  `state` TINYINT NOT NULL DEFAULT 0,
+  `ordering` INT NOT NULL DEFAULT 0,
+  `created` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `created_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `modified` DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `modified_by` INT UNSIGNED NOT NULL DEFAULT 0,
+  `checked_out` INT UNSIGNED,
+  `checked_out_time` DATETIME,
+  PRIMARY KEY (`id`), KEY `idx_state` (`state`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

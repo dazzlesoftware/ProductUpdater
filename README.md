@@ -22,7 +22,6 @@ Source: [`Wordpress/genesis-product-updater`](Wordpress/genesis-product-updater)
 - Plugin folder and slug: `genesis-product-updater`
 - Main plugin file: `genesis-product-updater.php`
 - Text domain: `genesis-product-updater`
-- Install package format: `genesis-product-updater-{version}.zip`
 
 The WordPress plugin provides the matching Products, Categories, Changelogs, generated update feeds, download statistics, and Downloads page shortcode.
 
@@ -44,6 +43,6 @@ Platform-specific behavior can differ where required by Joomla or WordPress, but
 
 ## Current release
 
-Current package version: **1.5.0**
+Current package version: **1.7.0**
 
 Both packages are authored by [Dazzle Software](https://dazzlesoftware.org), Copyright (C) 2026 Dazzle Software, LLC, and licensed under GNU/GPLv3 and later.

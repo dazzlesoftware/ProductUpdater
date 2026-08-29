@@ -17,7 +17,7 @@
  * which is the pattern used by every bundled Joomla extension in this codebase
  * (e.g. administrator/components/com_admin/script.php).
  */
-class GenesisproductupdaterInstallerScript
+class Com_GenesisproductupdaterInstallerScript
 {
 	private function updateProductSchema(): void
 	{
@@ -41,6 +41,22 @@ class GenesisproductupdaterInstallerScript
 		}
 	}
 
+	private function updateBundleSchema(): void
+	{
+		$db = \Joomla\CMS\Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+		$query = "CREATE TABLE IF NOT EXISTS " . $db->quoteName('#__productupdater_bundles') . " (
+			id INT UNSIGNED NOT NULL AUTO_INCREMENT, title VARCHAR(255) NOT NULL DEFAULT '', description VARCHAR(1024) NOT NULL DEFAULT '',
+			platform VARCHAR(32) NOT NULL DEFAULT 'joomla', output_slug VARCHAR(255) NOT NULL DEFAULT '', filename VARCHAR(255) NOT NULL DEFAULT 'list.xml', product_ids LONGTEXT NOT NULL,
+			state TINYINT NOT NULL DEFAULT 0, ordering INT NOT NULL DEFAULT 0, created DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
+			created_by INT UNSIGNED NOT NULL DEFAULT 0, modified DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00', modified_by INT UNSIGNED NOT NULL DEFAULT 0,
+			checked_out INT UNSIGNED NULL, checked_out_time DATETIME NULL, PRIMARY KEY (id), KEY idx_state (state)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
+		$db->setQuery($query)->execute();
+		$table = $db->replacePrefix('#__productupdater_bundles');
+		$columns = array_change_key_case($db->getTableColumns($table, false), CASE_LOWER);
+		if (!isset($columns['platform'])) { $db->setQuery('ALTER TABLE ' . $db->quoteName($table) . ' ADD ' . $db->quoteName('platform') . " VARCHAR(32) NOT NULL DEFAULT 'joomla' AFTER " . $db->quoteName('description'))->execute(); }
+	}
+
     /**
      * Called after any type of action (install, update, discover_install).
      *
@@ -52,6 +68,7 @@ class GenesisproductupdaterInstallerScript
     public function postflight($type, $parent)
     {
 		$this->updateProductSchema();
+		$this->updateBundleSchema();
 
         return true;
     }

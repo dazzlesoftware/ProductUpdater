@@ -11,6 +11,7 @@ namespace Joomla\Component\Genesisproductupdater\Administrator\Platform;
 \defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Event\Event;
 
@@ -93,13 +94,14 @@ class PlatformRegistry
         $this->register(new MobilePlatform());
         $this->register(new FabPlatform());
 
-        PluginHelper::importPlugin('productupdaterplatform');
-
         $app = Factory::getApplication();
 
-        $app->getDispatcher()->dispatch(
-            'onProductUpdaterRegisterPlatforms',
-            new Event('onProductUpdaterRegisterPlatforms', ['registry' => $this])
-        );
+		if ($app instanceof CMSApplicationInterface) {
+			PluginHelper::importPlugin('productupdaterplatform');
+			$app->getDispatcher()->dispatch(
+				'onProductUpdaterRegisterPlatforms',
+				new Event('onProductUpdaterRegisterPlatforms', ['registry' => $this])
+			);
+		}
     }
 }

@@ -3,7 +3,7 @@ Contributors: dazzlesoftware
 Requires at least: 5.5
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.5.2
+Stable tag: 1.7.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

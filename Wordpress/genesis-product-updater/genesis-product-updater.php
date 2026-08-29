@@ -8,7 +8,7 @@
 /**
  * Plugin Name: Genesis Product Updater
  * Description: Manage self-hosted update feeds (Joomla XML, WordPress JSON, and any other platform you register) for multiple products/platforms from one place, and generate the feed files to a configurable folder.
- * Version: 1.5.2
+ * Version: 1.7.0
  * Author: Dazzle Software
  * Author URI: https://dazzlesoftware.org
  * License: GPLv3 or later
@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PRODUCT_UPDATER_VERSION', '1.5.2' );
+define( 'PRODUCT_UPDATER_VERSION', '1.7.0' );
 define( 'PRODUCT_UPDATER_PLUGIN_FILE', __FILE__ );
 define( 'PRODUCT_UPDATER_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PRODUCT_UPDATER_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -33,6 +33,7 @@ require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-update
 require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-changelog.php';
 require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-changelog-post-type.php';
 require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-changelog-metaboxes.php';
+require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-bundle.php';
 require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-admin.php';
 require_once PRODUCT_UPDATER_PLUGIN_DIR . 'includes/class-genesis-product-updater-downloads.php';
 
@@ -51,7 +52,8 @@ function product_updater_boot() {
 	Product_Updater_Post_Type::instance();
 	Product_Updater_Product_Metaboxes::instance();
 	Product_Updater_Changelog_Post_Type::instance();
-	Product_Updater_Changelog_Metaboxes::instance();
+Product_Updater_Changelog_Metaboxes::instance();
+Product_Updater_Bundle::instance();
 	Product_Updater_Admin::instance();
 	Product_Updater_Downloads::instance();
 }

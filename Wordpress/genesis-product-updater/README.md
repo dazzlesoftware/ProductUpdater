@@ -131,4 +131,8 @@ For a normal release workflow:
 
 ## Version
 
-Current package version: **1.5.2**.
+Current package version: **1.7.0**.
+
+## Joomla extension-set bundles
+
+Open **Genesis Product Updater > Bundles** to group products into platform-specific indexes. Joomla bundles generate `updates/joomla/{bundle-slug}/list.xml`; WordPress, Mobile, and Fab bundles generate `updates/{platform}/{bundle-slug}/list.json`. Select one platform per bundle, then select products from that platform. Each entry links to the product's individual generated feed.
